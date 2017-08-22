@@ -50,6 +50,7 @@ db.once("open", function() {
     name:  "Fig"
   });
 
+  // -> 콜백지옥 지우기위해서는 Promise필요 https://teamtreehouse.com/library/understanding-promises-in-javascript
   // remove All documents
   Animal.remove({}, function () {
     // It will fail because "save" is asynchronise function
