@@ -42,7 +42,12 @@ db.once("open", function() {
   });
 
   // It will fail because "save" is asynchronise function
-  elephant.save();
+  elephant.save(function (err) {
+    if (err) console.error("Save Failed.", err);
+    else console.log("Saved!");
 
-  db.close();
+    db.close(function () {
+      console.log("db connection closed");
+    });
+  });
 });
