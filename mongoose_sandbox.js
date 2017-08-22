@@ -23,7 +23,26 @@ db.once("open", function() {
   // All database communication goes here
 
   var Schema = mongoose.Schema;
-  var AnimalSchema = new Schema({});
+  var AnimalSchema = new Schema({
+    type: String,
+    size: String,
+    color: String,
+    mass: Number,
+    name: String
+  });
+
+  var Animal = mongoose.model("Animal", AnimalSchema);
+
+  var elephant = new Animal({
+    type: "elephant",
+    size: "big",
+    color: "gray",
+    mass: 6000,
+    name: "Lawrence"
+  });
+
+  // It will fail because "save" is asynchronise function
+  elephant.save();
 
   db.close();
 });
