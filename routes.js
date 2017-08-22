@@ -81,7 +81,10 @@ router.post("/:qId/answers/:aId/vote-:dir",
       answerId: req.params.aId,
       vote: req.params.dir
     });
-
+    console.log("실행됨?");
+    var err = new Error("Not Found");
+    err.status = 404;
+    next(err);
   });
 
 module.exports = router;
