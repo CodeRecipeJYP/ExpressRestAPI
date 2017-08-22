@@ -51,7 +51,7 @@ db.once("open", function() {
   });
 
   // remove All documents
-  Animal.remove({}, function() {
+  Animal.remove({}, function () {
     // It will fail because "save" is asynchronise function
     elephant.save(function (err) {
       if (err) console.error("Save Failed.", err);
@@ -59,8 +59,14 @@ db.once("open", function() {
         if (err) console.error("Save Failed.", err);
         whale.save(function (err) {
           if (err) console.error("Save Failed.", err);
-          db.close(function () {
-            console.log("db connection closed");
+          Animal.find({size: "big"}, function (err, animals) {
+            animals.forEach(function (animal) {
+              console.log(animal.name + " the " + animal.color + " " + animal.type);
+            });
+
+            db.close(function () {
+              console.log("db connection closed");
+            });
           });
         });
       });
