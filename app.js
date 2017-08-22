@@ -21,7 +21,7 @@ app.use("/questions", routes);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
-  console.log("Catch 404 function called??");
+  // console.log("Catch 404 function called??");
   var err = new Error("Not Found");
   err.status = 404;
   next(err);
@@ -29,7 +29,7 @@ app.use(function(req, res, next) {
 
 // Error Handler
 app.use(function(err, req, res, next) {
-  console.log("Error Handler function called??");
+  // console.log("Error Handler function called??");
   // 500 : internal server error
   res.status(err.status || 500);
   res.json({
