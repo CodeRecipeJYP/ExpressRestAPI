@@ -74,12 +74,21 @@ router.post("/:qId/answers/:aId/vote-:dir",
     }
   },
   function(req, res) {
+  // function(req, res, next) {
     res.json({
       response: "You sent me a POST request to /vote-" + req.params.dir,
       questionId: req.params.qId,
       answerId: req.params.aId,
       vote: req.params.dir
     });
+    next();
+    // app.js에서 app.use("/questions", routes); router.post에 걸린 후에는
+    // next()호출해도 app.js 아래에있는 middleware 호출 안하나봄.
+    // 그리고 Error핸들링은 next(err)를 호출한 경우에만 하는가봄
+    // -> 알고보니 function(req, res, next)의 형태가 아니라서 next가 없었음
+    // 그럼 무슨 next를 호출한거지?
+    // -> 위의 입력 인자에 next추가하고 실행하니 catch 404 호출됨
+    // -> 정상적으로 next호출하면 아래의 middleware까지 호출되나봄
   });
 
 module.exports = router;
