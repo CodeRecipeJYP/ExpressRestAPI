@@ -11,6 +11,7 @@ var port = process.env.PORT || 3000;
 
 
 app.use(function(req, res, next) {
+  console.log("The leave on the trees are", req.query.color);
   req.myMessage = "Hello, middleware #2";
   console.log("First piece of middleware");
   next();
