@@ -19,6 +19,24 @@ app.use(jsonParser());
 
 app.use("/questions", routes);
 
+// catch 404 adn forward to error handler
+app.use(function(req, res, next) {
+  var err = new Error("Not Found");
+  err.status = 404;
+  next(err);
+});
+
+// Error Handler
+app.use(function(err, req, res, next) {
+  // 500 : internal server error
+  res.status(err.status || 500);
+  res.json({
+    error: {
+      message: err.message
+    }
+  })
+});
+
 app.listen(port, function() {
   console.log("express server is listening on port", port);
 });
