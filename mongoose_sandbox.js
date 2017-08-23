@@ -43,6 +43,11 @@ db.once("open", function() {
     next();
   });
 
+  AnimalSchema.statics.findSmall = function (callback) {
+    // this == Animal Model
+    return this.find({size: "small"}, callback);
+  };
+
   var Animal = mongoose.model("Animal", AnimalSchema);
 
   var elephant = new Animal({
@@ -91,7 +96,7 @@ db.once("open", function() {
     Animal.create(animalData, function (err) {
       if (err) console.error("Save Failed.", err);
 
-      Animal.find({}, function (err, animals) {
+      Animal.findSmall(function (err, animals) {
         animals.forEach(function (animal) {
           console.log(animal.name + " the " + animal.color + " " + animal.type + " is a " + animal.size + "-sized animal.");
         });
