@@ -8,7 +8,7 @@ var router = express.Router();
 var Question = require("./models").Question;
 
 router.param("qId", function (req, res, next, id) {
-  Qustion.findById(id, function (err, doc) {
+  Question.findById(id, function (err, doc) {
     if (err) return next(err);
     if (!doc) {
       err = new Error("Not Found");
