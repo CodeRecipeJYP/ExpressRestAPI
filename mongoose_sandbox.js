@@ -106,15 +106,16 @@ db.once("open", function() {
 
 
     Animal.remove({}, function () {
+        console.log("1. Animal remove success");
         Animal.create(animalData, function (err) {
             if (err) console.error("Save Failed.", err);
-            else console.log("1. elephant create success");
+            else console.log("2. Animal create success");
             newAnimal.save(function (err, instance) {
                 if (err) console.error("Save Failed.", err);
-                else console.log("2. elephant new success");
+                else console.log("3. elephant new success");
 
                 db.close(function () {
-                    console.log("3. db connection closed");
+                    console.log("4. db connection closed");
                 });
             });
         });
