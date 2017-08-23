@@ -19,7 +19,7 @@ app.use(jsonParser());
 
 var mongoose = require('mongoose');
 
-mongoose.connect("mongodb://localhost:27017/sandbox",
+mongoose.connect("mongodb://localhost:27017/qa",
   {
     useMongoClient: true
     /* other options */
