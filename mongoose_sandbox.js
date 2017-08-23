@@ -25,7 +25,7 @@ db.once("open", function() {
   var Schema = mongoose.Schema;
   var AnimalSchema = new Schema({
     type:  {type: String, default: "goldfish"},
-    size:  {type: String, default: "small"},
+    size:  String,
     color: {type: String, default: "golden"},
     mass:  {type: Number, default: 0.007},
     name:  {type: String, default: "Angela"}
@@ -35,7 +35,6 @@ db.once("open", function() {
 
   var elephant = new Animal({
     type:  "elephant",
-    size:  "big",
     color: "gray",
     mass:  6000,
     name:  "Lawrence"
@@ -45,10 +44,33 @@ db.once("open", function() {
 
   var whale = new Animal({
     type:  "whale",
-    size:  "big",
     mass:  190500,
     name:  "Fig"
   });
+
+  var animalData = [
+    {
+      type: 'mouse',
+      color: "gray",
+      mass: 0.035,
+      name: "Marvin"
+    },
+    {
+      type: 'nutria',
+      color: "brown",
+      mass: 6.35,
+      name: "Gretchen"
+    },
+    {
+      type: 'wolf',
+      color: "gray",
+      mass: 45,
+      name: "Iris"
+    },
+    elephant,
+    animal,
+    whale
+  ];
 
   // -> 콜백지옥 지우기위해서는 Promise필요 https://teamtreehouse.com/library/understanding-promises-in-javascript
   // remove All documents
