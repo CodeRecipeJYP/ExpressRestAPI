@@ -22,18 +22,28 @@ router.get("/", function(req, res) {
 });
 
 // POST /questions
-router.post("/", function(req, res) {
-  res.json({
-    response: "You sent me a POST request",
-    body: req.body
+router.post("/", function(req, res, next) {
+  var question = new Question(req.body);
+  question.save(function (err, question) {
+    if (err) return next(err);
+    res.status(201);
+    res.json(question);
   });
+  // res.json({
+  //   response: "You sent me a POST request",
+  //   body: req.body
+  // });
 });
 
 //GET /questions/:qId
 router.get("/:qId", function(req, res) {
-  res.json({
-    response: "You sent me a GET request for ID " + req.params.qId
+  Qustion.findById(req.params.qId, function (err, doc) {
+    if (err) return next(err);
+    res.json(doc);
   });
+  // res.json({
+  //   response: "You sent me a GET request for ID " + req.params.qId
+  // });
 });
 
 
