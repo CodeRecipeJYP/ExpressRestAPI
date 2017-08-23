@@ -39,7 +39,7 @@ AnswerSchema.method("vote", function (vote, callback) {
 var QuestionSchema = new Schema({
   text: String,
   createAt: {type: Date, default: Date.now},
-  answer: [AnswerSchema]
+  answers: [AnswerSchema]
 });
 
 QuestionSchema.pre("save", function (next) {
