@@ -5,12 +5,18 @@
 
 var express = require('express');
 var router = express.Router();
-
+var Question = require("./models").Question;
 
 // GET /questions
 // Return all the questions
 router.get("/", function(req, res) {
-  res.json({response: "You sent me a GET request"});
+  // -1 means Descending Order
+  // "null" is to use third parameter as projection.
+  Question.find({}, null, {sort: {createdAt: -1}}, function (err, questions) {
+    if (err) return next(err);
+    res.json(questions);
+  });
+  // res.json({response: "You sent me a GET request"});
 });
 
 // POST /questions
