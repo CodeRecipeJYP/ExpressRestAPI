@@ -105,27 +105,66 @@ db.once("open", function() {
 
 
 
-  Animal.remove({}, function () {
-    // It will fail because "save" is asynchronise function
+  var removePromise = new Promise(function (resolve, reject) {
+    console.log("Animal.remove");
+    Animal.remove({}, function () {
+      console.log("Animal.remove success");
+      resolve();
+    });
+    console.log("Animal.remove pending");
+  });
+
+
+  function createAnimal() {
+    console.log("Animal.create");
     Animal.create(animalData, function (err) {
-      if (err) console.error("Save Failed.", err);
+      if (err) {
+        console.error("Save Failed.", err);
+      }
+      else {
+        console.log("Animal.create success");
+      }
+    });
+    console.log("Animal.create pending");
+  }
+
+  function newElephant() {
+      console.log("newElephant");
       newAnimal.save(function (err, instance) {
         if (err) console.error("Save Failed.", err);
-        else console.log("elephant new success");
-
-        // findOne : return first matched.
-        Animal.findOne({type: "elephant"}, function (err, elephant) {
-          elephant.findSameColor(function (err, animals) {
-            animals.forEach(function (animal) {
-              console.log(animal.name + " the " + animal.color + " " + animal.type + " is a " + animal.size + "-sized animal.");
-            });
-
-            db.close(function () {
-              console.log("db connection closed");
-            });
-          })
-        });
+        else {
+          console.log("newElephant success");
+        }
       });
-    });
+    console.log("newElephant pending");
+  }
+
+  removePromise.then(createAnimal)
+    .then(newElephant);
+
+    //
+    // .then(
+    // .then(function () {
+    //   console.log("Animal.findOne");
+    //   Animal.findOne({type: "elephant"}, function (err, elephant) {
+    //     console.log("Animal.findOne success");
+    //     return elephant;
+    //   });
+    // });
+
+//   elephant.findSameColor(function (err, animals) {
+//     animals.forEach(function (animal) {
+//       console.log(animal.name + " the " + animal.color + " " + animal.type + " is a " + animal.size + "-sized animal.");
+//     });
+//
+//     db.close(function () {
+//       console.log("db connection closed");
+//     });
+//   })
+// });
+// });
+// });
+// });
+
+
   });
-});
