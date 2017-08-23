@@ -115,18 +115,20 @@ db.once("open", function() {
   });
 
 
-  function createAnimal() {
+  var createPromise = new Promise(function (resolve, reject) {
     console.log("2. Animal.create");
     Animal.create(animalData, function (err) {
       if (err) {
-        console.error("Save Failed.", err);
+        reject(err);
+        // console.error("Save Failed.", err);
       }
       else {
         console.log("2. Animal.create resolved");
+        resolve();
       }
     });
     console.log("2. Animal.create pending");
-  }
+  });
 
   function newElephant() {
     console.log("3. newElephant");
@@ -177,10 +179,10 @@ db.once("open", function() {
     console.log("6. closeDb pending");
   }
 
-  removePromise.then(createAnimal)
-    .then(newElephant)
-    .then(findElephant)
-    .then(findSameColorWithElephant)
-    .then(printAnimals)
-    .then(closeDb);
+  removePromise.then(createPromise);
+    // .then(newElephant)
+    // .then(findElephant)
+    // .then(findSameColorWithElephant)
+    // .then(printAnimals)
+    // .then(closeDb);
 });
