@@ -12,10 +12,12 @@ var Question = require("./models").Question;
 router.get("/", function(req, res) {
   // -1 means Descending Order
   // "null" is to use third parameter as projection.
-  Question.find({}, null, {sort: {createdAt: -1}}, function (err, questions) {
-    if (err) return next(err);
-    res.json(questions);
-  });
+  Question.find({})
+    .sort({createdAt: -1})
+    .exec(function (err, questions) {
+      if (err) return next(err);
+      res.json(questions);
+    });
   // res.json({response: "You sent me a GET request"});
 });
 
