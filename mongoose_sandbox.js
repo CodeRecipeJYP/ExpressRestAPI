@@ -106,65 +106,81 @@ db.once("open", function() {
 
 
   var removePromise = new Promise(function (resolve, reject) {
-    console.log("Animal.remove");
+    console.log("1. Animal.remove");
     Animal.remove({}, function () {
-      console.log("Animal.remove success");
+      console.log("1. Animal.remove resolved");
       resolve();
     });
-    console.log("Animal.remove pending");
+    console.log("1. Animal.remove pending");
   });
 
 
   function createAnimal() {
-    console.log("Animal.create");
+    console.log("2. Animal.create");
     Animal.create(animalData, function (err) {
       if (err) {
         console.error("Save Failed.", err);
       }
       else {
-        console.log("Animal.create success");
+        console.log("2. Animal.create resolved");
       }
     });
-    console.log("Animal.create pending");
+    console.log("2. Animal.create pending");
   }
 
   function newElephant() {
-      console.log("newElephant");
-      newAnimal.save(function (err, instance) {
-        if (err) console.error("Save Failed.", err);
-        else {
-          console.log("newElephant success");
-        }
-      });
-    console.log("newElephant pending");
+    console.log("3. newElephant");
+    newAnimal.save(function (err, instance) {
+      if (err) console.error("Save Failed.", err);
+      else {
+        console.log("3. newElephant resolved");
+      }
+    });
+    console.log("3. newElephant pending");
+  }
+
+  function findElephant() {
+    console.log("4. Animal.findOne");
+    Animal.findOne({type: "elephant"}, function (err, elephant) {
+      console.log("4. Animal.findOne resolved");
+      // 아마 이걸 next(elephant)같은것으로 바꿔야해결될듯.
+      return elephant;
+    });
+    console.log("4. Animal.findOne Pending");
+  }
+
+  function findSameColorWithElephant(elephant) {
+    console.log("5. findSameColorWithElephant");
+    elephant.findSameColor(function (err, animals) {
+      console.log("5. findSameColorWithElephant resolved");
+      return animals;
+    });
+    console.log("5. findSameColorWithElephant pending");
+  }
+
+  function printAnimals(animals) {
+    console.log("5. printAnimals");
+    animals.forEach(function (animal) {
+      console.log("5. printAnimals resolved");
+      console.log(animal.name + " the " + animal.color + " " + animal.type + " is a " + animal.size + "-sized animal.");
+    });
+    console.log("5. printAnimals pending");
+  }
+
+  function closeDb() {
+    console.log("6. closeDb");
+    db.close(function () {
+      console.log("6. closeDb resolved");
+
+      console.log("db connection closed");
+    });
+    console.log("6. closeDb pending");
   }
 
   removePromise.then(createAnimal)
-    .then(newElephant);
-
-    //
-    // .then(
-    // .then(function () {
-    //   console.log("Animal.findOne");
-    //   Animal.findOne({type: "elephant"}, function (err, elephant) {
-    //     console.log("Animal.findOne success");
-    //     return elephant;
-    //   });
-    // });
-
-//   elephant.findSameColor(function (err, animals) {
-//     animals.forEach(function (animal) {
-//       console.log(animal.name + " the " + animal.color + " " + animal.type + " is a " + animal.size + "-sized animal.");
-//     });
-//
-//     db.close(function () {
-//       console.log("db connection closed");
-//     });
-//   })
-// });
-// });
-// });
-// });
-
-
-  });
+    .then(newElephant)
+    .then(findElephant)
+    .then(findSameColorWithElephant)
+    .then(printAnimals)
+    .then(closeDb);
+});
