@@ -96,22 +96,35 @@ db.once("open", function() {
 
   // -> 콜백지옥 지우기위해서는 Promise필요 https://teamtreehouse.com/library/understanding-promises-in-javascript
   // remove All documents
+  var newAnimal = new Animal({
+    type: 'elephant2',
+    color: "gray",
+    mass: 50000.035,
+    name: "ele2"
+  });
+
+
+
   Animal.remove({}, function () {
     // It will fail because "save" is asynchronise function
     Animal.create(animalData, function (err) {
       if (err) console.error("Save Failed.", err);
+      newAnimal.save(function (err, instance) {
+        if (err) console.error("Save Failed.", err);
+        else console.log("elephant new success");
 
-      // findOne : return first matched.
-      Animal.findOne({type: "elephant"}, function (err, elephant) {
-        elephant.findSameColor(function (err, animals) {
-          animals.forEach(function (animal) {
-            console.log(animal.name + " the " + animal.color + " " + animal.type + " is a " + animal.size + "-sized animal.");
-          });
+        // findOne : return first matched.
+        Animal.findOne({type: "elephant"}, function (err, elephant) {
+          elephant.findSameColor(function (err, animals) {
+            animals.forEach(function (animal) {
+              console.log(animal.name + " the " + animal.color + " " + animal.type + " is a " + animal.size + "-sized animal.");
+            });
 
-          db.close(function () {
-            console.log("db connection closed");
-          });
-        })
+            db.close(function () {
+              console.log("db connection closed");
+            });
+          })
+        });
       });
     });
   });
