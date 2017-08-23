@@ -31,6 +31,18 @@ db.once("open", function() {
     name: {type: String, default: "Angela"}
   });
 
+  AnimalSchema.pre("save", function (next) {
+    if (this.mass >= 100) {
+      this.size = "big";
+    } else if (this.mass >= 5 && this.mass < 100) {
+      this.size = "medium";
+    } else {
+      this.size = "small";
+    }
+
+    next();
+  });
+
   var Animal = mongoose.model("Animal", AnimalSchema);
 
   var elephant = new Animal({
@@ -79,9 +91,9 @@ db.once("open", function() {
     Animal.create(animalData, function (err) {
       if (err) console.error("Save Failed.", err);
 
-      Animal.find({size: "big"}, function (err, animals) {
+      Animal.find({}, function (err, animals) {
         animals.forEach(function (animal) {
-          console.log(animal.name + " the " + animal.color + " " + animal.type);
+          console.log(animal.name + " the " + animal.color + " " + animal.type + " is a " + animal.size + "-sized animal.");
         });
 
         db.close(function () {
