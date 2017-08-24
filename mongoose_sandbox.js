@@ -103,61 +103,48 @@ db.once("open", function() {
         name: "ele2"
     });
 
+    var waterfall = require("async-waterfall");
+    Animal.remove({}, () => {
+        waterfall([
+            function (next) {
+                console.log('1. Animal remove');
+                Animal.remove({}, () => {
+                        console.log('1. Animal remove success');
+                        next();
+                    }
+                );
+                console.log('1. Animal remove pending');
+            },
+            function (next) {
+                console.log('2. Animal create');
+                Animal.create(animalData, (err) => {
+                    if (err) console.log('Save Failed', err);
+                    else {
+                        console.log('2. Animal create success');
+                        next();
+                    }
+                });
+                console.log('2. Animal create pending');
+            },
+            function (next) {
+                console.log('3. elephant new');
+                newAnimal.save((err, instance) => {
+                    if (err) console.err('save failed');
+                    else {
+                        console.log('3. elephant new success');
+                        next();
+                    }
+                });
+                console.log('3. elephant new pending');
+            },
+            function () {
+                console.log('4. db connection close');
+                db.close(() => {
+                    console.log('4. db connection closed');
+                });
+                console.log('4. db connection close pending');
+            }
+        ]);
 
-
-    var removePromise = new Promise(function (resolve, reject) {
-        console.log("1. Animal.remove");
-        Animal.remove({}, function () {
-            console.log("1. Animal.remove resolved");
-            resolve();
-        });
-        console.log("1. Animal.remove pending");
     });
-
-
-    var createPromise = new Promise(function (resolve, reject) {
-        console.log("2. Animal.create");
-        Animal.create(animalData, function (err) {
-            if (err) {
-                console.error("Save Failed.", err);
-                reject();
-            }
-            else {
-                console.log("2. Animal.create resolved");
-                resolve();
-            }
-        });
-        console.log("2. Animal.create pending");
-    });
-
-    removePromise.then(function () {
-            createPromise.then(function () {
-                    newElephantPromise.then(
-                        closeDb
-                    )
-                }
-            );
-        }
-    );
-
-    function newElephant() {
-        console.log("3. newElephant");
-        newAnimal.save(function (err, instance) {
-            if (err) console.error("Save Failed.", err);
-            else {
-                console.log("3. newElephant resolved");
-            }
-        });
-        console.log("3. newElephant pending");
-    }
-
-    function closeDb() {
-        console.log("4. closeDb");
-        db.close(function () {
-            console.log("4. closeDb resolved");
-
-            console.log("db connection closed");
-        });
-        console.log("4. closeDb pending");
-    }
 });
