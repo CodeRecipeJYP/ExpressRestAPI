@@ -115,28 +115,28 @@ db.once("open", function() {
   });
 
 
-  var createPromise = new Promise(function (resolve, reject) {
-    console.log("2. Animal.create");
-    Animal.create(animalData, function (err) {
-      if (err) {
-        console.error("Save Failed.", err);
-        reject();
-      }
-      else {
-        console.log("2. Animal.create resolved");
-        resolve();
-      }
-    });
-    console.log("2. Animal.create pending");
-  });
+  // var createPromise = new Promise(function (resolve, reject) {
+  //   console.log("2. Animal.create");
+  //   Animal.create(animalData, function (err) {
+  //     if (err) {
+  //       console.error("Save Failed.", err);
+  //       reject();
+  //     }
+  //     else {
+  //       console.log("2. Animal.create resolved");
+  //       resolve();
+  //     }
+  //   });
+  //   console.log("2. Animal.create pending");
+  // });
 
-  removePromise.then(
-      function () {
-          createPromise.then(
-              newElephant
-          );
-      }
-  );
+  // removePromise.then(
+  //     function () {
+  //         // createPromise.then(
+  //         //     newElephant
+  //         // );
+  //     }
+  // );
 
   function newElephant() {
     console.log("3. newElephant");
