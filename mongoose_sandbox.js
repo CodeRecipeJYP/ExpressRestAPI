@@ -115,21 +115,27 @@ db.once("open", function() {
   });
 
 
-  function createAnimals() {
+  var createPromise = new Promise(function (resolve, reject) {
     console.log("2. Animal.create");
     Animal.create(animalData, function (err) {
       if (err) {
         console.error("Save Failed.", err);
+        reject();
       }
       else {
         console.log("2. Animal.create resolved");
+        resolve();
       }
     });
     console.log("2. Animal.create pending");
-  }
+  });
 
   removePromise.then(
-      createAnimals
+      function () {
+          createPromise.then(
+              newElephant
+          );
+      }
   );
 
   function newElephant() {
